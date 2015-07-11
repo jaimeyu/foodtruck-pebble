@@ -1,0 +1,30 @@
+{
+    "appKeys": {
+        "description": 1,
+        "direction": 5,
+        "distance": 4,
+        "gps": 3,
+        "open_at": 2,
+        "status": 0
+    },
+    "capabilities": [
+        "location"
+    ],
+    "companyName": "jaime@jaimeyu.com",
+    "longName": "FoodTruckNearMe",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "sdkVersion": "3",
+    "shortName": "FoodTruckNearMe",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "f9e4b80c-72cf-403b-8295-93e81eb69457",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
