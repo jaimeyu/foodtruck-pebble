@@ -1,28 +1,40 @@
 {
-    "appKeys": {
-        "description": 1,
-        "direction": 5,
-        "distance": 4,
-        "gps": 3,
-        "open_at": 2,
-        "status": 0
-    },
+    "appKeys": {},
     "capabilities": [
         "location"
     ],
     "companyName": "jaime@jaimeyu.com",
-    "longName": "FoodTruckNearMe",
-    "projectType": "native",
+    "longName": "foodtruck3",
+    "projectType": "pebblejs",
     "resources": {
-        "media": []
+        "media": [
+            {
+                "file": "images/menu_icon.png",
+                "menuIcon": true,
+                "name": "IMAGE_MENU_ICON",
+                "type": "png"
+            },
+            {
+                "file": "images/logo_splash.png",
+                "name": "IMAGE_LOGO_SPLASH",
+                "type": "png"
+            },
+            {
+                "file": "images/tile_splash.png",
+                "name": "IMAGE_TILE_SPLASH",
+                "type": "png"
+            },
+            {
+                "file": "fonts/UbuntuMono-Regular.ttf",
+                "name": "MONO_FONT_14",
+                "type": "font"
+            }
+        ]
     },
     "sdkVersion": "3",
-    "shortName": "FoodTruckNearMe",
-    "targetPlatforms": [
-        "aplite",
-        "basalt"
-    ],
-    "uuid": "f9e4b80c-72cf-403b-8295-93e81eb69457",
+    "shortName": "foodtruck3",
+    "uuid": "631a7e7c-3489-4860-b42a-776585846a40",
+    "versionCode": 1,
     "versionLabel": "1.0",
     "watchapp": {
         "watchface": false
