@@ -15,10 +15,10 @@ var fn_gps;
 var fn_closeness;
 navigator.geolocation.getCurrentPosition(locationSuccess, locationError, locationOptions);  
 var main = new UI.Card({
-	title: 'Food Trucks near you',
+	title: 'Hungry?',
 	icon: 'images/menu_icon.png',
 	subtitle: 'Loading...',
-	body: 'Grabbing data...'
+  body: 'Up: Show list, down: reset gps'
 });
 	get_truck_data();
 
@@ -177,6 +177,8 @@ function locationError(err) {
   
   menu.on('longSelect', function(e) {
     // Get new gps coords every 15 seconds.
+    clearInterval(fn_gps);
+    clearInterval(fn_closeness);
     fn_gps = setInterval(function()
                 {
                   navigator.geolocation.getCurrentPosition(locationSuccess, locationError, locationOptions); 
@@ -184,6 +186,24 @@ function locationError(err) {
     
     
     console.log("Activating the GPS every 15 seconds.");
+    /*
+     Accuracy versus decimal places
+      decimal
+      places	degrees	N/S or
+      E/W at equator	E/W at
+      23N/S	E/W at
+      45N/S	E/W at
+      67N/S
+      0	1.0	111.32 km	102.47 km	78.71 km	43.496 km
+      1	0.1	11.132 km	10.247 km	7.871 km	4.3496 km
+      2	0.01	1.1132 km	1.0247 km	.7871 km	.43496 km
+      3	0.001	111.32 m	102.47 m	78.71 m	43.496 m
+      4	0.0001	11.132 m	10.247 m	7.871 m	4.3496 m
+      5	0.00001	1.1132 m	1.0247 m	.7871 m	.43496 m
+      6	0.000001	111.32 mm	102.47 mm	78.71 mm	43.496 mm
+      7	0.0000001	11.132 mm	10.247 mm	7.871 mm	4.3496 mm
+      8	0.00000001	1.1132 mm	1.0247 mm	.7871 mm	.43496 mm
+      */
     fn_closeness = setInterval(function(){
       var my_mag = my_lat + my_long;
         var mag = e.item.longitude+ e.item.latitude;
