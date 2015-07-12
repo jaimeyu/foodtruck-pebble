@@ -126,42 +126,7 @@ function gps_to_dist(lat, long){
 			if (cur_time > op.start && cur_time < op.end) {
 				console.log(t.description);
         
-        var curmylat = my_lat;
-        var curmylong = my_long;
-        if (curmylong < 0) {curmylong = curmylong *-1;}
-        if (curmylat < 0) {curmylat = curmylat *-1;}
-        
-        var lat = 0;
-        var long = 0;
-        if (op.latitude < 0){
-          lat = curmylat + op.latitude;
-        } else {
-          lat = curmylat - op.latitude;
-        }
-        if ( op.longitude <0) {
-          long = curmylong + op.longitude;
-        }else {
-          long = curmylong - op.longitude;
-        }
-        
-        var cmag = Math.sqrt((lat*lat) + (long*long));
-        var mymag = Math.sqrt((my_lat*my_lat) + (my_long*my_long));
-        
-        var dist = cmag - mymag;
-        if (dist < 0) { dist = dist * -1;}
-        
-        console.log("GPS Debug");
-        console.log("op.lat" + op.latitude);
-        console.log("op.long" + op.longitude);
-        console.log("mylat" + curmylat);
-        console.log("mylong" + curmylong );
-        console.log("lat" + lat);
-        console.log("long" + long );
-        console.log("cmag" + cmag);
-        console.log("mymag" + mymag);
-        console.log("dist" + dist);
-        
-        gps_to_dist(op.latitude, op.longitude);
+        var cmag = gps_to_dist(op.latitude, op.longitude);
         
         var dt = ">100km";
         if (cmag< 0.001 ) {
@@ -195,20 +160,9 @@ function gps_to_dist(lat, long){
 
 	/* Order the list by closest to you */
 	list_results.sort( function(a,b) {
-		var magnitude_a = a.latitude + a.longitude;
-		var magnitude_b = b.latitude + b.longitude;
-		
-	
-		/*var my_lat = localStorage.getItem("my_lat");
-		var my_long = localStorage.getItem("my_long");
-		*/
-		var my_mag = my_lat + my_long;
-
-		var diff_a = my_mag - magnitude_a;
-		var diff_b = my_mag - magnitude_b;
     
-    diff_a = gps_to_dist(a.latitude, a.longitude);
-    diff_b = gps_to_dist(b.latitude, b.longitude);
+    var diff_a = gps_to_dist(a.latitude, a.longitude);
+    var diff_b = gps_to_dist(b.latitude, b.longitude);
 
 		if ( diff_a > diff_b ) {
 			return 1;
@@ -271,23 +225,11 @@ function gps_to_dist(lat, long){
       8	0.00000001	1.1132 mm	1.0247 mm	.7871 mm	.43496 mm
       */
     fn_closeness = setInterval(function(){
-      var my_mag = my_lat + my_long;
-        var mag = e.item.longitude+ e.item.latitude;
-      if ( mag < 0) {
-        if ((my_mag + mag) < 0.01) {
+      var dist = gps_to_dist(e.item.latitude, e.item.longitude);
+        if ((dist) < 0.01) {
           Vibe.vibrate('long'); 
-    }
-        else if ((my_mag + mag < 0.1)) {
+        } else if (dist < 0.1) {
           Vibe.vibrate('short');
-    }
-    }
-      else {
-        if ((my_mag - mag) < 0.01) {
-          Vibe.vibrate('long'); 
-    }
-        else if ((my_mag - mag < 0.1)) {
-          Vibe.vibrate('short');
-    }
     }
     },1500);
 
