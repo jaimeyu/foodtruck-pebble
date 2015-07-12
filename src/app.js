@@ -154,6 +154,7 @@ function locationError(err) {
 		console.log('Selected item #' + e.itemIndex + ' of section #' + e.sectionIndex);
 		console.log('The item is titled "' + e.item.title + '"');
 		console.log('The item is "' + e.item.where + '"' + e.item.why);
+		console.log('The item loc "' + e.item.longitude + ',' + e.item.latitude + '"');
 		var card = new UI.Card();
 		card.title(e.item.title);
 		card.subtitle(e.item.special);
