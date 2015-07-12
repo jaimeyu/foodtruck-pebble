@@ -54,12 +54,17 @@ var locationOptions = {
 	timeout: 10000
 };
 
-function locationSuccess(pos) {
-	console.log('lat= ' + pos.coords.latitude + ' lon= ' + pos.coords.longitude);
-	/* Set it to local storage. What's the performance hit? */
-	localStorage.setItem("my_lat", pos.coords.latitude);
-	localStorage.setItem("my_long", pos.coords.longitude);
+var my_lat = 0;
+var my_long = 0;
 
+function locationSuccess(pos) {
+	console.log('My lat= ' + pos.coords.latitude + ' long= ' + pos.coords.longitude);
+	/* Set it to local storage. What's the performance hit? */
+	/*localStorage.setItem("my_lat", pos.coords.latitude);
+	localStorage.setItem("my_long", pos.coords.longitude);
+	*/
+       my_lat = pos.coords.latitude;
+       my_long = pos.coords.longitude;
 }
 
 function locationError(err) {
@@ -102,7 +107,6 @@ function locationError(err) {
 			//console.log("Is it open?");
 			var op = co[key];
 			if (cur_time > op.start && cur_time < op.end) {
-				console.log("it is!");
 				console.log(t.description);
 
 				list_results.push(
@@ -124,9 +128,9 @@ function locationError(err) {
 		var magnitude_b = b.latitude + b.longitude;
 		
 	
-		var my_lat = localStorage.getItem("my_lat");
+		/*var my_lat = localStorage.getItem("my_lat");
 		var my_long = localStorage.getItem("my_long");
-
+		*/
 		var my_mag = my_lat + my_long;
 
 		var diff_a = my_mag - magnitude_a;
