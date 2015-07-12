@@ -28,7 +28,7 @@ main.on('click', 'up', function(e) {
 	get_truck_data();
 });
 
-
+/*
 main.on('click', 'select', function(e) {
 	var wind = new UI.Window({
 		fullscreen: true,
@@ -43,15 +43,16 @@ main.on('click', 'select', function(e) {
 	wind.add(textfield);
 	wind.show();
 });
+*/
 
 main.on('click', 'down', function(e) {
   clearInterval(fn_gps);
   clearInterval(fn_closeness);
 
 	var card = new UI.Card();
-	card.title('A Card');
-	card.subtitle('Is a Window');
-	card.body('The simplest window type in Pebble.js.');
+	card.title('GPS tracker reset');
+	card.subtitle('GPS is reset');
+	card.body('Press back to go back...');
 	card.show();
 });
 
@@ -79,6 +80,14 @@ function locationError(err) {
 }
 
 
+function gps_to_dist(lat, long){
+  var clat = Math.abs(lat) - Math.abs(my_lat);
+  var clong = Math.abs(long) - Math.abs(my_long);
+  
+  var dist = Math.sqrt((clat*clat) + (clong*clong));
+  console.log("Dist:" + dist);
+  return dist;
+}
 
 // Make an asynchronous request
 
@@ -152,6 +161,8 @@ function locationError(err) {
         console.log("mymag" + mymag);
         console.log("dist" + dist);
         
+        gps_to_dist(op.latitude, op.longitude);
+        
         var dt = ">100km";
         if (cmag< 0.001 ) {
           dt = "<100m";
@@ -159,9 +170,12 @@ function locationError(err) {
           dt = "<1km";
         } else if (cmag < 0.05){
           dt = "<5km";
-        }
-          else if (cmag < 0.1) {
+        } else if (cmag < 0.1) {
           dt = "<11km";
+        } else if (cmag < 0.25) {
+          dt = "<25km";
+        } else if (cmag < 0.5) {
+          dt = "<50km";
         } else {
           dt ="<100km";
         }
@@ -192,6 +206,9 @@ function locationError(err) {
 
 		var diff_a = my_mag - magnitude_a;
 		var diff_b = my_mag - magnitude_b;
+    
+    diff_a = gps_to_dist(a.latitude, a.longitude);
+    diff_b = gps_to_dist(b.latitude, b.longitude);
 
 		if ( diff_a > diff_b ) {
 			return 1;
