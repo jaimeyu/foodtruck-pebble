@@ -101,7 +101,7 @@ function locationError(err) {
 		/* For some reason, we time out if we do too many ops.
 		 * Limit to only ~10 items for now...
 		 */
-		if (cnt > 9) { return;}
+		if (cnt > 40) { return;}
 
 		cnt++;
 		var t = o[key];
@@ -116,10 +116,59 @@ function locationError(err) {
 			var op = co[key];
 			if (cur_time > op.start && cur_time < op.end) {
 				console.log(t.description);
+        
+        var curmylat = my_lat;
+        var curmylong = my_long;
+        if (curmylong < 0) {curmylong = curmylong *-1;}
+        if (curmylat < 0) {curmylat = curmylat *-1;}
+        
+        var lat = 0;
+        var long = 0;
+        if (op.latitude < 0){
+          lat = curmylat + op.latitude;
+        } else {
+          lat = curmylat - op.latitude;
+        }
+        if ( op.longitude <0) {
+          long = curmylong + op.longitude;
+        }else {
+          long = curmylong - op.longitude;
+        }
+        
+        var cmag = Math.sqrt((lat*lat) + (long*long));
+        var mymag = Math.sqrt((my_lat*my_lat) + (my_long*my_long));
+        
+        var dist = cmag - mymag;
+        if (dist < 0) { dist = dist * -1;}
+        
+        console.log("GPS Debug");
+        console.log("op.lat" + op.latitude);
+        console.log("op.long" + op.longitude);
+        console.log("mylat" + curmylat);
+        console.log("mylong" + curmylong );
+        console.log("lat" + lat);
+        console.log("long" + long );
+        console.log("cmag" + cmag);
+        console.log("mymag" + mymag);
+        console.log("dist" + dist);
+        
+        var dt = ">100km";
+        if (cmag< 0.001 ) {
+          dt = "<100m";
+        } else if (cmag < 0.01) {
+          dt = "<1km";
+        } else if (cmag < 0.05){
+          dt = "<5km";
+        }
+          else if (cmag < 0.1) {
+          dt = "<11km";
+        } else {
+          dt ="<100km";
+        }
 
 				list_results.push(
 					{title:t.name,
-						subtitle:op.display + op.special + t.description,
+						subtitle:dt + "@" + op.display + op.special + t.description,
 						where: op.display,
 						why: op.special,
 						description: t.description,
