@@ -7,8 +7,12 @@
 var UI = require('ui');
 var Vector2 = require('vector2');
 var ajax = require('ajax');
+var Vibe = require('ui/vibe');
 
 
+
+var fn_gps;
+var fn_closeness;
 navigator.geolocation.getCurrentPosition(locationSuccess, locationError, locationOptions);  
 var main = new UI.Card({
 	title: 'Food Trucks near you',
@@ -41,6 +45,9 @@ main.on('click', 'select', function(e) {
 });
 
 main.on('click', 'down', function(e) {
+  clearInterval(fn_gps);
+  clearInterval(fn_closeness);
+
 	var card = new UI.Card();
 	card.title('A Card');
 	card.subtitle('Is a Window');
@@ -79,6 +86,7 @@ function locationError(err) {
 	/* 
 	   This is where the hackathon is happening. 
 	   lat= 39.0437 lon= -77.4875 
+     Actually no, this is the emulator's geoip
 	   */
 
 	var list_results = [];
@@ -166,6 +174,43 @@ function locationError(err) {
 		card.show();
 
 	});
+  
+  menu.on('longSelect', function(e) {
+    // Get new gps coords every 15 seconds.
+    fn_gps = setInterval(function()
+                {
+                  navigator.geolocation.getCurrentPosition(locationSuccess, locationError, locationOptions); 
+                } , 3500);
+    
+    
+    console.log("Activating the GPS every 15 seconds.");
+    fn_closeness = setInterval(function(){
+      var my_mag = my_lat + my_long;
+        var mag = e.item.longitude+ e.item.latitude;
+      if ( mag < 0) {
+        if ((my_mag + mag) < 0.01) {
+          Vibe.vibrate('long'); 
+    }
+        else if ((my_mag + mag < 0.1)) {
+          Vibe.vibrate('short');
+    }
+    }
+      else {
+        if ((my_mag - mag) < 0.01) {
+          Vibe.vibrate('long'); 
+    }
+        else if ((my_mag - mag < 0.1)) {
+          Vibe.vibrate('short');
+    }
+    }
+    },1500);
+
+    var card = new UI.Card();
+    card.title("Target:" + e.item.title);
+    card.body("Start walking, your watch will buzz when you are near..." + "lat:" + e.item.latitude + "long: " + e.item.longitude);
+		card.show();
+    
+  });
 	
 	menu.show();
 	console.log("Done parsing the trucks");
