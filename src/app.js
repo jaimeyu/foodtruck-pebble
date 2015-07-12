@@ -111,8 +111,8 @@ function locationError(err) {
 						where: op.display,
 						why: op.special,
 						description: t.description,
-						latitude: t.latitude,
-						longitude: t.longitude
+						latitude: op.latitude,
+						longitude: op.longitude
 					});
 			}
 		});
